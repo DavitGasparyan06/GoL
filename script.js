@@ -69,7 +69,7 @@ function setup() {
     generateMatrix(60, 200, 20, 30, 10, 4)
     createCanvas(matrix.length * side, matrix[0].length * side)
     stroke(180, 180, 180)
-    frameRate(30)
+    frameRate(60)
 }
 function draw() {
     // console.log(grassArr.length);

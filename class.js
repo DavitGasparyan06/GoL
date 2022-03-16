@@ -54,7 +54,7 @@ class Grass extends LivingCreature {
 
 class Eater extends LivingCreature {
     constructor(x, y) {
-        super(x,y)
+        super(x, y)
         this.energy = 13
     }
 
@@ -170,12 +170,10 @@ class Eater extends LivingCreature {
         }
     }
 }
-class Predator {
+class Predator extends LivingCreature {
     constructor(x, y) {
-        this.x = x
-        this.y = y
+        super(x, y)
         this.energy = 60
-        this.direction = []
     }
 
     updateDirection() {
@@ -193,22 +191,7 @@ class Predator {
 
     chooseCell(ch) {
         this.updateDirection()
-        var found = [];
-        for (let i in this.direction) {
-
-            let x = this.direction[i][0];
-            let y = this.direction[i][1];
-
-            if (x >= 0 && y >= 0 && x <= matrix.length - 1 && y <= matrix.length - 1) {
-
-                if (matrix[y][x] == ch) {
-                    found.push(this.direction[i])
-                }
-
-            }
-        }
-
-        return found
+        return super.chooseCell(ch)
     }
 
     move() {
@@ -286,12 +269,10 @@ class Predator {
     }
 
 }
-class Omnivorous {
+class Omnivorous extends LivingCreature {
     constructor(x, y) {
-        this.x = x
-        this.y = y
+        super(x, y)
         this.energy = 35
-        this.direction = []
     }
 
     updateDirection() {
@@ -309,22 +290,7 @@ class Omnivorous {
 
     chooseCell(ch) {
         this.updateDirection()
-        var found = [];
-        for (let i in this.direction) {
-
-            let x = this.direction[i][0];
-            let y = this.direction[i][1];
-
-            if (x >= 0 && y >= 0 && x <= matrix.length - 1 && y <= matrix.length - 1) {
-
-                if (matrix[y][x] == ch) {
-                    found.push(this.direction[i])
-                }
-
-            }
-        }
-
-        return found
+        return super.chooseCell(ch)
     }
     move() {
         this.energy--
@@ -460,37 +426,7 @@ class Omnivorous {
         }
     }
 }
-class Flower {
-    constructor(x, y) {
-        this.x = x
-        this.y = y
-        this.multiply = 0
-        this.direction = [
-            [this.x - 1, this.y - 1],
-            [this.x, this.y - 1],
-            [this.x + 1, this.y - 1],
-            [this.x - 1, this.y],
-            [this.x + 1, this.y],
-            [this.x - 1, this.y + 1],
-            [this.x, this.y + 1],
-            [this.x + 1, this.y + 1]
-        ]
-    }
-    chooseCell(character) {
-        let found = [];
-        for (let i in this.direction) {
-            let x = this.direction[i][0];
-            let y = this.direction[i][1];
-
-            if (x >= 0 && y >= 0 && x < matrix.length && y < matrix.length && matrix[y][x] == character) {
-                if (matrix[y][x] == character) {
-                    found.push(this.direction[i])
-                }
-            }
-        }
-
-        return found;
-    }
+class Flower extends LivingCreature {
     mul() {
 
         this.multiply++
@@ -498,7 +434,6 @@ class Flower {
         let emptyCell = random(arr)
 
         if (this.multiply >= 7 && emptyCell) {
-
             let x = emptyCell[0]
             let y = emptyCell[1]
             matrix[y][x] = 5
