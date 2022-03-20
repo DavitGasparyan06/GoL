@@ -1,4 +1,4 @@
-class LivingCreature {
+module.exports = class LivingCreature {
     constructor(x, y) {
         this.x = x
         this.y = y
@@ -30,12 +30,13 @@ class LivingCreature {
         return found;
     }
 }
-class Grass extends LivingCreature {
+let LivingCreature = require('./LivingCreature')
+module.exports = class Grass extends LivingCreature {
     mul() {
 
         this.multiply++
         let arr = this.chooseCell(0)
-        let emptyCell = random(arr)
+        let emptyCell = arr[Math.floor(Math.random() * arr.length)]
 
         if (this.multiply >= 5 && emptyCell) {
 
@@ -52,7 +53,7 @@ class Grass extends LivingCreature {
 
 }
 
-class Eater extends LivingCreature {
+module.exports = class Eater extends LivingCreature {
     constructor(x, y) {
         super(x, y)
         this.energy = 13
@@ -90,7 +91,7 @@ class Eater extends LivingCreature {
         }
         else {
             arr = this.chooseCell(0)
-            let emptyCell = random(arr)
+            let emptyCell = arr[Math.floor(Math.random() * arr.length)]
             if (emptyCell) {
                 let x = emptyCell[0]
                 let y = emptyCell[1]
@@ -170,7 +171,7 @@ class Eater extends LivingCreature {
         }
     }
 }
-class Predator extends LivingCreature {
+module.exports = class Predator extends LivingCreature {
     constructor(x, y) {
         super(x, y)
         this.energy = 60
@@ -204,7 +205,7 @@ class Predator extends LivingCreature {
             }
         }
         else {
-            let emptyCell = random(this.chooseCell(0))
+            let emptyCell = arr[Math.floor(Math.random() * arr.length)]
 
             if (emptyCell) {
                 let x = emptyCell[0]
@@ -269,7 +270,7 @@ class Predator extends LivingCreature {
     }
 
 }
-class Omnivorous extends LivingCreature {
+module.exports = class Omnivorous extends LivingCreature {
     constructor(x, y) {
         super(x, y)
         this.energy = 35
@@ -307,7 +308,7 @@ class Omnivorous extends LivingCreature {
         } else {
             arr = this.chooseCell(0)
 
-            let emptyCell = random(arr)
+            let emptyCell = arr[Math.floor(Math.random() * arr.length)]
 
             if (emptyCell) {
                 let x = emptyCell[0]
@@ -426,12 +427,12 @@ class Omnivorous extends LivingCreature {
         }
     }
 }
-class Flower extends LivingCreature {
+module.exports = class Flower extends LivingCreature {
     mul() {
 
         this.multiply++
         let arr = this.chooseCell(0)
-        let emptyCell = random(arr)
+        let emptyCell = arr[Math.floor(Math.random() * arr.length)]
 
         if (this.multiply >= 7 && emptyCell) {
             let x = emptyCell[0]
