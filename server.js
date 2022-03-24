@@ -8,11 +8,11 @@ var messages = [];
 app.use(express.static("."));
 
 app.get('/', function (req, res) {
-   res.redirect('index.html');
+    res.redirect('index.html');
 });
 
 server.listen(3000);
-
+matrix = []
 function generateMatrix(side, GrassCount, GrassEaterCount, PredatorCount, OmnivorousCount, FlowerCount) {
 
     for (let i = 0; i < side; i++) {
@@ -24,36 +24,36 @@ function generateMatrix(side, GrassCount, GrassEaterCount, PredatorCount, Omnivo
     }
 
     for (let i = 0; i < GrassCount; i++) {
-        let x = Math.round(random(0, side - 1))
-        let y = Math.round(random(0, side - 1))
+        let x = Math.floor(Math.random() * side)
+        let y = Math.floor(Math.random() * side)
         if (matrix[y][x] == 0) {
             matrix[y][x] = 1;
         }
     }
     for (let i = 0; i < GrassEaterCount; i++) {
-        let x = Math.round(random(0, side - 1))
-        let y = Math.round(random(0, side - 1))
+        let x = Math.floor(Math.random() * side)
+        let y = Math.floor(Math.random() * side)
         if (matrix[y][x] == 0) {
             matrix[y][x] = 2;
         }
     }
     for (let i = 0; i < PredatorCount; i++) {
-        let x = Math.round(random(0, side - 1))
-        let y = Math.round(random(0, side - 1))
+        let x = Math.floor(Math.random() * side)
+        let y = Math.floor(Math.random() * side)
         if (matrix[y][x] == 0) {
             matrix[y][x] = 3;
         }
     }
     for (let i = 0; i < OmnivorousCount; i++) {
-        let x = Math.round(random(0, side - 1))
-        let y = Math.round(random(0, side - 1))
+        let x = Math.floor(Math.random() * side)
+        let y = Math.floor(Math.random() * side)
         if (matrix[y][x] == 0) {
             matrix[y][x] = 4;
         }
     }
     for (let i = 0; i < FlowerCount; i++) {
-        let x = Math.round(random(0, side - 1))
-        let y = Math.round(random(0, side - 1))
+        let x = Math.floor(Math.random() * side)
+        let y = Math.floor(Math.random() * side)
 
         if (matrix[y][x] == 0) {
             matrix[y][x] = 5;
@@ -62,68 +62,48 @@ function generateMatrix(side, GrassCount, GrassEaterCount, PredatorCount, Omnivo
     return matrix
 }
 
- io.sockets.emit('send matrix', generateMatrix())
+io.sockets.emit('send matrix', generateMatrix(30,40,25,15,10,15))
 
- var grassArr = []
-var eaterArr = []
-var predatorArr = []
-var omnivorousArr = []
-var flowerArr = []
-
-grass = require("./Grass")
-GrassEater = require("./GrassEater")
+grassArr = []
+eaterArr = []
+predatorArr = []
+omnivorousArr = []
+flowerArr = []
 
 
-function create(){
 
-    for (let i = 0; i < GrassCount; i++) {
-        let x = Math.round(random(0, side - 1))
-        let y = Math.round(random(0, side - 1))
-        if (matrix[y][x] == 0) {
-            let gr = new Grass(x, y)
-            grassArr.push(gr)
-            matrix[y][x] = 1;
-        }
-    }
-    for (let i = 0; i < GrassEaterCount; i++) {
-        let x = Math.round(random(0, side - 1))
-        let y = Math.round(random(0, side - 1))
-        if (matrix[y][x] == 0) {
-            let Xt = new Eater(x, y)
-            eaterArr.push(Xt)
-            matrix[y][x] = 2;
-        }
-    }
-    for (let i = 0; i < PredatorCount; i++) {
-        let x = Math.round(random(0, side - 1))
-        let y = Math.round(random(0, side - 1))
-        if (matrix[y][x] == 0) {
-            let Xt = new Predator(x, y)
-            predatorArr.push(Xt)
-            matrix[y][x] = 3;
-        }
-    }
-    for (let i = 0; i < OmnivorousCount; i++) {
-        let x = Math.round(random(0, side - 1))
-        let y = Math.round(random(0, side - 1))
-        if (matrix[y][x] == 0) {
-            let Om = new Omnivorous(x, y)
-            omnivorousArr.push(Om)
-            matrix[y][x] = 4;
-        }
-    }
-    for (let i = 0; i < FlowerCount; i++) {
-        let x = Math.round(random(0, side - 1))
-        let y = Math.round(random(0, side - 1))
-        if (matrix[y][x] == 0) {
-            let fl = new Flower(x, y)
-            flowerArr.push(fl)
-            matrix[y][x] = 5;
+/////////required
+Grass = require("./Grass")
+Eater = require("./GrassEater")
+Predator = require("./Predator")
+Omnivorous = require("./Omnivorous")
+Flower = require("./Flower")
+//////////
+
+function create() {
+    for (let y = 0; y < matrix.length; y++) {
+        for (let x = 0; x < matrix[y].length; x++) {
+            if (matrix[y][x] == 1) {
+                let gr = new Grass(x, y)
+                grassArr.push(gr)
+            } else if(matrix[y][x] == 2) {
+                let eat = new Eater(x, y)
+                eaterArr.push(eat)
+            }else if(matrix[y][x] == 3) {
+                let pr = new Predator(x, y)
+                predatorArr.push(pr)
+            }else if(matrix[y][x] == 4) {
+                let Om = new Omnivorous(x, y)
+                omnivorousArr.push(Om)
+            }else if(matrix[y][x] == 5) {
+                let fl = new Flower(x, y)
+                flowerArr.push(fl)
+            }
         }
     }
     io.sockets.emit('send matrix', matrix)
 }
-function game (){
+function game() {
     for (let i in grassArr) {
         grassArr[i].mul()
     }
@@ -141,7 +121,7 @@ function game (){
     }
     io.sockets.emit("send matrix", matrix)
 }
-setInterval(game,1000)
-io.on('connection', function(socket){
+setInterval(game, 1000)
+io.on('connection', function (socket) {
     create(matrix)
 })

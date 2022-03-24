@@ -1,12 +1,10 @@
-import { Socket } from "socket.io";
-
-var io = io()
+var socket = io()
 side = 30
 
 function setup() {
-   generateMatrix(60, 200, 20, 30, 10, 4)
-   createCanvas(matrix.length * side, matrix[0].length * side)
+   createCanvas(60 * side, 60 * side)
    stroke(180, 180, 180)
+   
 }
 function drawing(matrix){
     for (var y = 0; y < matrix.length; y++) {
@@ -33,8 +31,7 @@ function drawing(matrix){
     }
 
 }
-setInterval(
-    function() {
+setInterval(function(){
     socket.on('send matrix', drawing)
     }
 ),1000
