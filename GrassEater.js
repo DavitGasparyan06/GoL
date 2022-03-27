@@ -36,6 +36,7 @@ module.exports = class Eater extends LivingCreature {
             this.eat()
         }
         else {
+
             arr = this.chooseCell(0)
             let emptyCell = arr[Math.floor(Math.random() * arr.length)]
             if (emptyCell) {
@@ -55,10 +56,10 @@ module.exports = class Eater extends LivingCreature {
         }
     }
     eat() {
-        //////////////////////Changed
+
         let newCell = Math.floor(Math.random((this.chooseCell(1))));
         let flowerCell = Math.floor(Math.random((this.chooseCell(5))));
-///////////
+
         if (flowerCell) {
             let newX = flowerCell[0];
             let newY = flowerCell[1];
@@ -108,7 +109,7 @@ module.exports = class Eater extends LivingCreature {
     }
 
     mul() {
-        let newCell = random(this.chooseCell(0));
+        let newCell = Math.floor(Math.random((this.chooseCell(0))));
 
         if (this.energy >= 15 && newCell) {
             let newGrassEater = new Eater(newCell[0], newCell[1]);
