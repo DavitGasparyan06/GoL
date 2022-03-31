@@ -76,7 +76,15 @@ module.exports = class Eater extends LivingCreature {
 
             this.y = newY;
             this.x = newX;
-            this.energy += 2;
+            if(weath == "winter"){
+            this.energy += 0.5;
+            }else if (weath == "spring"){
+              this.energy +=2
+            }else if (weath == "summer"){
+              this.energy+= 1.5
+            }else if(weath == "autumn"){
+              this.energy += 1
+            }
         }
         else if (newCell) {
             let newX = newCell[0];
