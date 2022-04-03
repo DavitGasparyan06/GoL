@@ -24,43 +24,41 @@ module.exports = class Eater extends LivingCreature {
     }
 
     move() {
-        this.energy--
 
-        if (this.energy >= 15) {
-            this.mul()
-        }
 
-        let arr = this.chooseCell(1)
+        let emptyCells = this.chooseCell(0)
+        let emptyCell = emptyCells[Math.floor(Math.random() * emptyCells.length)]
+        if (emptyCell && this.energy > 0) {
+            this.energy--
+            let x = emptyCell[0]
+            let y = emptyCell[1]
 
-        if (arr.length > 0) {
-            this.eat()
-        }
-        else {
+            matrix[y][x] = 2
+            matrix[this.y][this.x] = 0
 
-            arr = this.chooseCell(0)
-            let emptyCell = arr[Math.floor(Math.random() * arr.length)]
-            if (emptyCell) {
-                let x = emptyCell[0]
-                let y = emptyCell[1]
-
-                matrix[y][x] = 2
-                matrix[this.y][this.x] = 0
-
-                this.x = x
-                this.y = y
-            }
-        }
-
-        if (this.energy <= 0) {
+            this.x = x
+            this.y = y
+        }else if (this.energy <= 0) {
             this.die()
         }
     }
     eat() {
+        this.mul()
+        let newCells = this.chooseCell(1) // [[1,2] []]
+        let newCell = newCells[Math.floor(Math.random() * newCells.length)];
+        let flowerCells = this.chooseCell(5)
+        let flowerCell = flowerCells[Math.floor(Math.random()* flowerCells.length)];
 
-        let newCell = Math.floor(Math.random((this.chooseCell(1))));
-        let flowerCell = Math.floor(Math.random((this.chooseCell(5))));
-
-        if (flowerCell) {
+        if (flowerCell && this.energy > 0) {
+            if (weath == "winter") {
+                this.energy += 0.5;
+            } else if (weath == "spring") {
+                this.energy += 2
+            } else if (weath == "summer") {
+                this.energy += 1.5
+            } else if (weath == "autumn") {
+                this.energy += 1
+            }
             let newX = flowerCell[0];
             let newY = flowerCell[1];
 
@@ -76,20 +74,12 @@ module.exports = class Eater extends LivingCreature {
 
             this.y = newY;
             this.x = newX;
-            if(weath == "winter"){
-            this.energy += 0.5;
-            }else if (weath == "spring"){
-              this.energy +=2
-            }else if (weath == "summer"){
-              this.energy+= 1.5
-            }else if(weath == "autumn"){
-              this.energy += 1
-            }
-        }
-        else if (newCell) {
+
+        } else if (newCell && this.energy > 0) {
+            this.energy += 1.5;
             let newX = newCell[0];
             let newY = newCell[1];
-
+            
             matrix[this.y][this.x] = 0;
             matrix[newY][newX] = 2;
 
@@ -102,7 +92,9 @@ module.exports = class Eater extends LivingCreature {
 
             this.y = newY;
             this.x = newX;
-            this.energy += 2;
+
+        }else{
+            this.move()
         }
     }
 
@@ -117,7 +109,8 @@ module.exports = class Eater extends LivingCreature {
     }
 
     mul() {
-        let newCell = Math.floor(Math.random((this.chooseCell(0))));
+        let newCells = this.chooseCell(0)
+        let newCell = newCells[Math.floor(Math.random() * newCells.length)];
 
         if (this.energy >= 15 && newCell) {
             let newGrassEater = new Eater(newCell[0], newCell[1]);

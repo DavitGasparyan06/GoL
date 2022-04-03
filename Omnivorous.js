@@ -23,50 +23,44 @@ module.exports = class Omnivorous extends LivingCreature {
         return super.chooseCell(ch)
     }
     move() {
-        this.energy--
-        let arr = this.chooseCell(2)
-        let Grassarr = this.chooseCell(1)
-        let Eaterarr = this.chooseCell(2)
-        let Predatorarr = this.chooseCell(3)
-        let Flowerarr = this.chooseCell(5)
-        if (arr.length > 0 || Grassarr.length > 0 || Eaterarr > 0 || Predatorarr > 0 || Flowerarr > 0) {
-            this.eat()
-            if (this.energy >= 70) {
-                this.mul()
-            }
-        } else {
-            arr = this.chooseCell(0)
+        let emptyCells = this.chooseCell(0)
+        let emptyCell = emptyCells[Math.floor(Math.random() * emptyCells.length)]
 
-            let emptyCell = arr[Math.floor(Math.random() * arr.length)]
-
-            if (emptyCell) {
+            if (emptyCell && this.energy > 0) {
+                this.energy-=2
                 let x = emptyCell[0]
                 let y = emptyCell[1]
 
                 matrix[y][x] = 4
                 matrix[this.y][this.x] = 0
 
-
-
                 this.x = x
                 this.y = y
-            }
-            if (this.energy <= 0) {
+            }else if (this.energy <= 0) {
                 this.die()
             }
         }
-
-
-
-
-    }
     eat() {
-        let PredatorCell = Math.floor(Math.random((this.chooseCell(3))));
-        let GrassCell = Math.floor(Math.random((this.chooseCell(1))));
-        let EaterCell = Math.floor(Math.random((this.chooseCell(2))));
-        let FlowerCell = Math.floor(Math.random((this.chooseCell(5))));
+        this.mul()
+        let PredatorCells = this.chooseCell(3)
+        let PredatorCell = PredatorCells[Math.floor(Math.random() * PredatorCells.length)];
+        let GrassCells = this.chooseCell(1)
+        let GrassCell = GrassCells[Math.floor(Math.random() * GrassCells.length)];
+        let EaterCells = this.chooseCell(2)
+        let EaterCell = EaterCells[Math.floor(Math.random() * EaterCells.length)];
+        let FlowerCells = this.chooseCell(5)
+        let FlowerCell = FlowerCells[Math.floor(Math.random() * FlowerCells.length)];
 
-        if (PredatorCell) {
+        if (PredatorCell && this.energy > 0) {
+            if (weath == "winter") {
+                this.energy += 5;
+            } else if (weath == "spring") {
+                this.energy += 15
+            } else if (weath == "summer") {
+                this.energy += 10
+            } else if (weath == "autumn") {
+                this.energy += 12
+            }
             let newX = PredatorCell[0];
             let newY = PredatorCell[1];
 
@@ -81,8 +75,8 @@ module.exports = class Omnivorous extends LivingCreature {
             }
             this.y = newY;
             this.x = newX;
-            this.energy += 10;
-        } else if (EaterCell) {
+        } else if (EaterCell && this.energy > 0) {
+            this.energy += 8;
             let newX = EaterCell[0];
             let newY = EaterCell[1];
 
@@ -98,8 +92,9 @@ module.exports = class Omnivorous extends LivingCreature {
 
             this.y = newY;
             this.x = newX;
-            this.energy += 8;
-        } else if (FlowerCell) {
+            
+        } else if (FlowerCell && this.energy > 0) {
+            this.energy += 5;
             let newX = FlowerCell[0];
             let newY = FlowerCell[1];
 
@@ -115,8 +110,9 @@ module.exports = class Omnivorous extends LivingCreature {
 
             this.y = newY;
             this.x = newX;
-            this.energy += 5;
-        } else if (GrassCell) {
+            
+        } else if (GrassCell && this.energy > 0) {
+            this.energy += 2;
             let newX = GrassCell[0];
             let newY = GrassCell[1];
 
@@ -132,7 +128,9 @@ module.exports = class Omnivorous extends LivingCreature {
 
             this.y = newY;
             this.x = newX;
-            this.energy += 2;
+            
+        }else{
+            this.move()
         }
     }
 
@@ -147,10 +145,10 @@ module.exports = class Omnivorous extends LivingCreature {
     }
 
     mul() {
-        ///////////changed
-        var newCell = Math.floor(Math.random((this.chooseCell(0))));
-        ///////////////
-        if (newCell) {
+        let newCells = this.chooseCell(0)
+        let newCell = newCells[Math.floor(Math.random() * newCells.length)];
+
+        if (this.energy >= 50 && newCell) {
             var newOmnivorous = new Omnivorous(newCell[0], newCell[1]);
             omnivorousArr.push(newOmnivorous);
             matrix[newCell[1]][newCell[0]] = 4;

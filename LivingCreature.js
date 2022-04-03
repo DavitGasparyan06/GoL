@@ -7,21 +7,21 @@ module.exports = class LivingCreature {
             [this.x - 1, this.y - 1],
             [this.x, this.y - 1],
             [this.x + 1, this.y - 1],
-            [this.x - 1, this.y], 
+            [this.x - 1, this.y],
             [this.x + 1, this.y],
             [this.x - 1, this.y + 1],
             [this.x, this.y + 1],
             [this.x + 1, this.y + 1]
         ]
     }
-    chooseCell(character) {
+    chooseCell(ch) {
         let found = [];
         for (let i in this.direction) {
             let x = this.direction[i][0];
             let y = this.direction[i][1];
 
-            if (x >= 0 && y >= 0 && x < matrix.length && y < matrix.length && matrix[y][x] == character) {
-                if (matrix[y][x] == character) {
+            if (x >= 0 && y >= 0 && x < matrix.length && y < matrix.length && matrix[y][x] == ch) {
+                if (matrix[y][x] == ch) {
                     found.push(this.direction[i])
                 }
             }

@@ -28,17 +28,25 @@ function drawing(matrix) {
           fill("#4dffa6");
         }
       } else if (matrix[y][x] == 2) {
-        if(weath == "summer" || weath == "spring"){
-        fill("yellow");
-        }else if (weath == "winter" || weath == "autumn"){
+        if (weath == "summer" || weath == "spring") {
+          fill("yellow");
+        } else if (weath == "winter" || weath == "autumn") {
           fill("#a825db")
         }
       } else if (matrix[y][x] == 3) {
-        fill("red");
+        if (weath == "summer" || weath == "spring") {
+          fill("red");
+        } else if (weath == "winter" || weath == "autumn") {
+          fill("#4f120d")
+        }
       } else if (matrix[y][x] == 4) {
         fill("orange");
       } else if (matrix[y][x] == 5) {
-        fill("pink");
+        if(weath == "spring" || weath == "autumn"){
+        fill("#8ee30e");
+        }else if(weath == "summer" || weath == "winter "){
+          fill("pink")
+        }
       }
 
       rect(side * x, side * y, side, side);

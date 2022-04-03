@@ -24,18 +24,10 @@ module.exports = class Predator extends LivingCreature {
     }
 
     move() {
-        this.energy--
-        let arr = this.chooseCell(2)
-        if (arr.length > 0) {
-            this.eat()
-            if (this.energy >= 65) {
-                this.mul()
-            }
-        }
-        else {
-            let emptyCell = arr[Math.floor(Math.random() * arr.length)]
-
-            if (emptyCell) {
+            let emptyCells = this.chooseCell(0)
+            let emptyCell = emptyCells[Math.floor(Math.random() * emptyCells.length)]
+            if (emptyCell && this.energy >0) {
+                this.energy-=3
                 let x = emptyCell[0]
                 let y = emptyCell[1]
 
@@ -46,19 +38,25 @@ module.exports = class Predator extends LivingCreature {
 
                 this.x = x
                 this.y = y
-            } else {
-                this.energy += 0.5
-            }
-            if (this.energy <= 0) {
+            }else if(this.energy <= 0 ){
                 this.die()
             }
-        }
+        
     }
     eat() {
-        ////////Changed
-        var newCell = Math.floor(Math.random((this.chooseCell(2))));
-        ///////////////////
-        if (newCell) {
+        this.mul()
+        let newCells = this.chooseCell(2)
+        var newCell = newCells[Math.floor(Math.random() * newCells.length)];
+        if (newCell && this.energy > 0) {
+            if (weath == "winter") {
+                this.energy += 3.5
+            } else if (weath == "spring") {
+                this.energy += 5
+            } else if (weath == "summer") {
+                this.energy += 4
+            } else if (weath == "autumn") {
+                this.energy += 3
+            }
             var newX = newCell[0];
             var newY = newCell[1];
 
@@ -74,7 +72,8 @@ module.exports = class Predator extends LivingCreature {
 
             this.y = newY;
             this.x = newX;
-            this.energy += 5;
+        }else{
+            this.move()
         }
     }
 
@@ -90,9 +89,10 @@ module.exports = class Predator extends LivingCreature {
 
     mul() {
         ///////changed
-        var newCell = Math.floor(Math.random((this.chooseCell(0))));
+        let newCells = this.chooseCell(0)
+        var newCell = newCells[Math.floor(Math.random() * newCells.length)];
         /////////////////
-        if (newCell) {
+        if (this.energy > 70 && newCell) {
             var newPredator = new Predator(newCell[0], newCell[1]);
             predatorArr.push(newPredator);
             matrix[newCell[1]][newCell[0]] = 3;
