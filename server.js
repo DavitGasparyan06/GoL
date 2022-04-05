@@ -78,11 +78,11 @@ io.sockets.emit("send matrix", generateMatrix(60, 200, 20, 30, 10, 4));
 
 /////////required
 weath = "winter";
-Grass = require("./Grass");
-Eater = require("./GrassEater");
-Predator = require("./Predator");
-Omnivorous = require("./Omnivorous");
-Flower = require("./Flower");
+Grass = require("./Classes/Grass");
+Eater = require("./Classes/GrassEater");
+Predator = require("./Classes/Predator");
+Omnivorous = require("./Classes/Omnivorous");
+Flower = require("./Classes/Flower");
 //////////
 
 function create(matrix) {
